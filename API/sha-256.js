@@ -1,73 +1,4 @@
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Sha3-256 BurnToken</title>
-  <link rel="stylesheet" href="main.css">
-  <script src="https://unpkg.com/web3@latest/dist/web3.min.js"></script>
-</head>
-<body>
-  <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width">
-    <meta name="description" content="SHA3-256 online hash file checksum function">
-    <title>SHA3-256 File Checksum Online
-    </title>
-    <script>
-      if (location.hostname != 'localhost') {
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-        ga('create', 'UA-44208259-6', 'auto');
-        ga('send', 'pageview');
-      }
-    </script>
-    <link rel="stylesheet" href="css/style.css">
-    <script src="https://code.jquery.com/jquery-1.10.1.min.js"></script>
-  </head>
-  <body>
-    <div id="header">
-      <h1><a href="burnToken.php">註銷Token</a></h1>
-    </div>
-    <div id="body">
-      <script src="js/main.js"></script>
-      <div id="main">
-        <h1>SHA3-256 burn
-        </h1>
-        <div class="description">請輸入Transaction Hash
-        </div>
-		</br>
-        <div class="output">
-		  <form name="form" id="form" >
-		  <textarea id="output" placeholder="Iutput" name="address" ></textarea>
-					<input type="button" value="註銷" id="addString">
-					<p>先確認再按"註銷"</p>
-					
-		  </form>
-		  <div>
-		<p>
-	     <span id="message"></span>
-        </p>
-        <p>
-	    <span id="eventLog"></span>
-        </p>
-		</div>
-        </div>
-      </div>
-      
-        <div class="clearfix"></div>
-      </div>
-      <script src="https://cdn.jsdelivr.net/gh/emn178/js-sha3/build/sha3.min.js"></script>
-      <script>method = sha3_256;</script>
-    </div>
-    <div id="footer">&copy; 2021 Online Tools</div>
-
-
-	
-	<script>
-	var abi = [
+var abi = [
 	{
 		"constant": true,
 		"inputs": [],
@@ -375,9 +306,7 @@
 		"type": "event"
 	}
 ]
-        // smart contract address
         var address = '0x5B25337903a4Be9bDc8ba6569600512c42dFe1e0';
-
 
 window.addEventListener('load', async () => {
     // 偵測到使用的是新版MetaMask
@@ -414,77 +343,38 @@ window.addEventListener('load', async () => {
 	
 });
 
-//async function mint(){
-			//document.getElementById('message').textContent='交易處理中,請稍後';
-             //Contract.methods.mint(<?php if(isset($receiver) && isset($amount)) echo '"'.$receiver.'","'.$amount.'"' ?>).send({from:accounts[0]})
-            //.then(function(data){
-                //console.log(data);
-				//document.getElementById('message').textContent='交易處理結束';
-            //})        
-        //}
 		
+
+		
+
 async function addString(){//ok
             const nameElement = document.getElementById("output");
-            const address = nameElement.value;
-            
+            const output = nameElement.value;
+            const emailElement = document.getElementById("Owner");
+            const Owner = emailElement.value;
+			const date1 = document.getElementById("date");
+			const date = date1.value;
+			const time3 = Date.parse(date);
+            const cap = document.getElementById("capture");
+            const capture = cap.value;
+			const Array =[output,time3,capture];
+			const str =Array.join('');
+			//console.log(str);
 
-            document.getElementById('message').textContent='資料查詢中,請稍後';
+
+            document.getElementById('message').textContent='交易處理中,請稍後';
 			//web3.eth.accounts.hashMessage(web3.utils.utf8ToHex("Hello World"));
-			web3.eth.getTransaction(address)
+			//Contract.methods.addString(<?php if(isset($address)) echo '"'.$address.'"' ?>).send({from:accounts[0]})
+			web3.eth.sendTransaction({from:accounts[0],gasPrice: "20000000000",gas: "50000",to:accounts[0], value: 0, data:str})
             .then(function(data){
                 console.log(data);
 				const obj = JSON.parse(JSON.stringify(data));
-                var str = JSON.stringify(obj.input);	
-			    var Reduce =Math.round(str.substring(78,str.length-1)*0.2);
-				var total =str.substring(80,str.length-1);
-				var date1 = str.substring(67,77);
-				var Digital = str.substring(1,67);
-				var date2 = new Date(date1 * 1000);
-				
-				document.getElementById('message').innerHTML="Hash:"+obj.hash+"<br>"+"blockNumber:"+obj.blockNumber+"<br>"+"form:"+obj.from+"<br>"+"to:"+obj.to+"<br>"+"Input Data:"+obj.input;
-				document.getElementById('eventLog').innerHTML="到期時間為:"+date2+"<br>"+"發行數量"+total+"<br>"+"銷毀量:"+Reduce+"<br>"+"數位指紋:"+"<br>"+Digital; 
-			   
-			  
-			   var dateObject = new Date();
-               var date = dateObject.getDate();
-               var year = dateObject.getFullYear() ;
-               var Month = dateObject.getMonth()+1;
-			   var fullTime = `${year}-${Month}-${date}`;
-			   
-			   document.getElementById('message').innerHTML="目前時間為:"+fullTime;
-		     	
-			   //if(fullTime >= date1){
-				Contract.methods.burn(total,date1).send({from:accounts[0]}) //註銷兩成Token，八成市場交易
-                .then(function(data){
-                //console.log(data);
-				//document.getElementById('message').textContent=data;
-                })	
-			   //}else{
-				   
-				//document.getElementById('eventLog').innerHTML="合約尚未到期"+"<br>"+"到期時間為:"+date1;  
-                //document.getElementById('message').innerHTML="到期時間為:"+date1;			
-			   //}
-            })
-			//string=" ";
-			//document.getElementById('eventLog').innerHTML=string;    
-        }
-		
-
-
-	
-	//document.getElementById('sayhello').addEventListener('click',sayhello);
-	//document.getElementById('totalSupply').addEventListener('click',totalSupply);
-	//document.getElementById('symbol').addEventListener('click',symbol);
-
-	document.getElementById('addString').addEventListener('click',addString);
-		
-	
-	
-    
-
-	
-	
-
-</script>
-  </body>
-</html>
+				document.getElementById('message').textContent='上傳文件成功';
+				document.getElementById('eventLog').innerHTML="transactionHash:"+obj.transactionHash;
+			Contract.methods.mint(Owner,capture,obj.transactionHash).send({from:accounts[0]})
+            .then(function(data){
+                console.log(data);
+				document.getElementById('message').textContent='發幣成功';
+            }) 
+            }) 
+}			

@@ -3,7 +3,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Sha3-256 BurnToken</title>
+  <title>Sha3-256 File Hash Online</title>
   <link rel="stylesheet" href="main.css">
   <script src="https://unpkg.com/web3@latest/dist/web3.min.js"></script>
 </head>
@@ -26,27 +26,58 @@
     </script>
     <link rel="stylesheet" href="css/style.css">
     <script src="https://code.jquery.com/jquery-1.10.1.min.js"></script>
+	 <script src="js/digitalsign.js"></script>
   </head>
   <body>
     <div id="header">
-      <h1><a href="burnToken.php">註銷Token</a></h1>
+      <h1><a href="sha-256test.php">上傳合約文件</a></h1>
     </div>
     <div id="body">
       <script src="js/main.js"></script>
       <div id="main">
-        <h1>SHA3-256 burn
+        <h1>SHA3-256 File Checksum
         </h1>
-        <div class="description">請輸入Transaction Hash
+        <div class="description">SHA3-256 online hash file checksum function
+        </div>
+        <div class="input">
+          <div id="droppable-zone">
+            <div id="droppable-zone-wrapper">
+              <div id="droppable-zone-text">Drop File Here</div>
+            </div>
+            <input class="droppable-file" id="input" type="file" placeholder="Input2">
+          </div>
         </div>
 		</br>
-        <div class="output">
-		  <form name="form" id="form" >
-		  <textarea id="output" placeholder="Iutput" name="address" ></textarea>
-					<input type="button" value="註銷" id="addString">
-					<p>先確認再按"註銷"</p>
-					
+        
+		<div>
+		<section id="sign-and-verify">
+        <input type="file" id="source-file"/>
+        <button id="verify">Verify Signature (CA驗證)</button>
+		<button id="sign" style="background-color:#ffffff;border:3px #ffffff;"></button>
+        </section>
+		</div><br>
+		
+		<div class="submit">
+          <input class="btn btn-default" id="execute" type="button" value="Hash">
+        </div>
+	   
+	   <div class="output">
+	    <script src="API/sha-256.js"></script>
+		  <form id="sha-256eth2" method="post">
+		  <textarea id="output" placeholder="Output" name="output"></textarea>
+          <br>Owner：<input type="text" name="Owner" id="Owner">格式為:0x000000000.....
+		  <br>expiry date：<input type="text" name="date" id="date">格式為:2021-11-07 
+		  <br>Carbon capture：<input type="text" name="capture" id="capture">碳捕捉量(必須為奇數個位元)<br>
+					<input type="button" value="送出" class="btn_2" id="addString">
+					<p>先按"送出"再按"確認上傳區塊鏈"</p>
+				
 		  </form>
-		  <div>
+		 
+        <section id="results">
+        <ul id="download-links">
+        </ul>
+        </section>       
+		<div>	
 		<p>
 	     <span id="message"></span>
         </p>
@@ -63,6 +94,7 @@
       <script>method = sha3_256;</script>
     </div>
     <div id="footer">&copy; 2021 Online Tools</div>
+	
 
 
 	
@@ -423,51 +455,7 @@ window.addEventListener('load', async () => {
             //})        
         //}
 		
-async function addString(){//ok
-            const nameElement = document.getElementById("output");
-            const address = nameElement.value;
-            
 
-            document.getElementById('message').textContent='資料查詢中,請稍後';
-			//web3.eth.accounts.hashMessage(web3.utils.utf8ToHex("Hello World"));
-			web3.eth.getTransaction(address)
-            .then(function(data){
-                console.log(data);
-				const obj = JSON.parse(JSON.stringify(data));
-                var str = JSON.stringify(obj.input);	
-			    var Reduce =Math.round(str.substring(78,str.length-1)*0.2);
-				var total =str.substring(80,str.length-1);
-				var date1 = str.substring(67,77);
-				var Digital = str.substring(1,67);
-				var date2 = new Date(date1 * 1000);
-				
-				document.getElementById('message').innerHTML="Hash:"+obj.hash+"<br>"+"blockNumber:"+obj.blockNumber+"<br>"+"form:"+obj.from+"<br>"+"to:"+obj.to+"<br>"+"Input Data:"+obj.input;
-				document.getElementById('eventLog').innerHTML="到期時間為:"+date2+"<br>"+"發行數量"+total+"<br>"+"銷毀量:"+Reduce+"<br>"+"數位指紋:"+"<br>"+Digital; 
-			   
-			  
-			   var dateObject = new Date();
-               var date = dateObject.getDate();
-               var year = dateObject.getFullYear() ;
-               var Month = dateObject.getMonth()+1;
-			   var fullTime = `${year}-${Month}-${date}`;
-			   
-			   document.getElementById('message').innerHTML="目前時間為:"+fullTime;
-		     	
-			   //if(fullTime >= date1){
-				Contract.methods.burn(total,date1).send({from:accounts[0]}) //註銷兩成Token，八成市場交易
-                .then(function(data){
-                //console.log(data);
-				//document.getElementById('message').textContent=data;
-                })	
-			   //}else{
-				   
-				//document.getElementById('eventLog').innerHTML="合約尚未到期"+"<br>"+"到期時間為:"+date1;  
-                //document.getElementById('message').innerHTML="到期時間為:"+date1;			
-			   //}
-            })
-			//string=" ";
-			//document.getElementById('eventLog').innerHTML=string;    
-        }
 		
 
 
@@ -481,8 +469,6 @@ async function addString(){//ok
 	
 	
     
-
-	
 	
 
 </script>
