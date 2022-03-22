@@ -927,7 +927,8 @@ window.addEventListener('load', async () => {
 			ethereum.on('accountsChanged', function (accounts) {
    				// Time to reload your interface with accounts[0]! 
 				document.getElementById("name").value = accounts[0];
-			});
+				parent.location.reload();
+			})
 			console.log(accounts[0]);
 			//console.log(Contract);
             //web3.eth.sendTransaction({/* ... */});
