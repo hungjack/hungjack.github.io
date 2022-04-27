@@ -384,8 +384,9 @@ async function transfer(){
 			
         }		
 
-document.getElementById('transferFrom').addEventListener('click',transferFrom);
+
 document.getElementById('transfer').addEventListener('click',transfer);
+document.getElementById('transferFrom').addEventListener('click',transferFrom);
 	
 	
     
