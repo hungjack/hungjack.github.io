@@ -365,7 +365,26 @@ async function transfer(){
 			
         }		
 
+		async function transferFrom(){
+			//checkonce();
+			const nameElement = document.getElementById("_from");
+            const _from = nameElement.value;
+            const emailElement = document.getElementById("_value3");
+            const _value3 = emailElement.value;
 
+			document.getElementById('message').textContent='交易處理中,請稍後';
+             Contract.methods.transfer(_from ,accounts[0] , _value3).send({from:accounts[0]})
+            .then(function(data){
+                //console.log(data);
+				document.getElementById('message').textContent='交易處理結束';
+			
+            })
+			
+			
+			
+        }		
+
+document.getElementById('transferFrom').addEventListener('click',transferFrom);
 document.getElementById('transfer').addEventListener('click',transfer);
 	
 	
