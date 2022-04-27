@@ -373,7 +373,7 @@ async function transfer(){
             const _value3 = emailElement.value;
 
 			document.getElementById('message').textContent='交易處理中,請稍後';
-             Contract.methods.transfer(_from ,accounts[0] , _value3).send({from:accounts[0]})
+             Contract.methods.transferFrom(_from ,accounts[0] , _value3).send({from:accounts[0]})
             .then(function(data){
                 //console.log(data);
 				document.getElementById('message').textContent='交易處理結束';
